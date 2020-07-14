@@ -10,6 +10,9 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+/**
+ * Implements the actual persistence of {@link Widget}s.
+ */
 @Component
 public class WidgetStorage {
     private final ConcurrentHashMap<Long, Widget> widgetDb = new ConcurrentHashMap<>();
@@ -22,11 +25,21 @@ public class WidgetStorage {
         return widget;
     }
 
-    public synchronized Optional<Widget> removeByZ(Integer id) {
-        var widget = zIndex.remove(id);
+    public synchronized Optional<Widget> removeByZ(Integer z) {
+        var widget = zIndex.remove(z);
 
         if (widget != null) {
             widgetDb.remove(widget.getId());
+        }
+
+        return Optional.ofNullable(widget);
+    }
+
+    public synchronized Optional<Widget> removeById(Long id) {
+        var widget = widgetDb.remove(id);
+
+        if (widget != null) {
+            zIndex.remove(widget.getZ());
         }
 
         return Optional.ofNullable(widget);
@@ -45,6 +58,10 @@ public class WidgetStorage {
         return Optional.ofNullable(widgetDb.get(id));
     }
 
+    public Optional<Widget> getByZ(Integer z) {
+        return Optional.ofNullable(zIndex.get(z));
+    }
+
     public Optional<Widget> ceilingByZ(Integer z) {
         var ceilingEntry = zIndex.ceilingEntry(z);
 
@@ -59,5 +76,11 @@ public class WidgetStorage {
         return new ArrayList<>(zIndex.tailMap(z).descendingMap().keySet());
     }
 
-
+    public Optional<Integer> getMaxZ() {
+        if (zIndex.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(zIndex.lastKey());
+        }
+    }
 }
