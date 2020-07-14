@@ -1,0 +1,7 @@
+### INTELLIJ ###
+.idea/
+*.iml
+
+### MAVEN ###
+target/
+*.xml.versionsBackup
