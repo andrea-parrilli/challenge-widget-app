@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -136,6 +137,31 @@ class WidgetControllerTest {
         var request = original.toBuilder().width(11).build();
 
         api.put().uri(PATH_WIDGET + original.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(request)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("id").isEqualTo(original.getId())
+                .jsonPath("width").isEqualTo(11)
+                .jsonPath("height").isEqualTo(original.getHeight())
+                .jsonPath("z").isEqualTo(original.getZ());
+
+        var found = widgetService.findById(original.getId());
+        assertTrue(found.isPresent());
+        assertEquals(11, found.get().getWidth());
+        assertEquals(original.getHeight(), found.get().getHeight());
+        assertEquals(original.getZ(), found.get().getZ());
+    }
+
+    @Test
+    void patch() {
+        var original = widgetService.create(Widget.builder().width(1).height(2).z(3).build());
+
+        // update just width
+        var request = Map.of("width", 11);
+
+        api.patch().uri(PATH_WIDGET + original.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(request)
                 .exchange()
