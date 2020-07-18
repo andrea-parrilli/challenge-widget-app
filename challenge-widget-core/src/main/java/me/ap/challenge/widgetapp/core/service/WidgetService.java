@@ -18,8 +18,12 @@ public class WidgetService {
         this.persistence = persistence;
     }
 
-    public Optional<Widget> getById(Long id) {
+    public Optional<Widget> findById(Long id) {
         return persistence.getById(id);
+    }
+
+    public Widget getById(Long id) {
+        return persistence.getById(id).orElseThrow(NoSuchElementException::new);
     }
 
     public Collection<Widget> getAll() {
@@ -46,13 +50,12 @@ public class WidgetService {
     }
 
     public Widget update(Long id, Widget widget) {
-        var existingWidget = persistence.getById(id);
+        return update(getById(id), widget);
+    }
 
-        if (existingWidget.isEmpty()) {
-            throw new NoSuchElementException();
-        } else {
-            widget.setId(id);
-            return persistence.update(widget, existingWidget.get());
-        }
+    public Widget update(Widget original, Widget updated) {
+        updated.setId(original.getId());
+
+        return persistence.update(updated, original);
     }
 }

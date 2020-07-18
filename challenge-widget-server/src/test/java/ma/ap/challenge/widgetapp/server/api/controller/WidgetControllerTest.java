@@ -89,7 +89,7 @@ class WidgetControllerTest {
                 .jsonPath("height").isEqualTo(widget.getHeight())
                 .jsonPath("z").isEqualTo(widget.getZ());
 
-        var found = widgetService.getById(id.get());
+        var found = widgetService.findById(id.get());
         assertTrue(found.isPresent());
         assertEquals(widget.getHeight(), found.get().getHeight());
         assertEquals(widget.getWidth(), found.get().getWidth());
@@ -120,7 +120,7 @@ class WidgetControllerTest {
                 .expectBody()
                 .isEmpty();
 
-        assertFalse(widgetService.getById(widget.getId()).isPresent());
+        assertFalse(widgetService.findById(widget.getId()).isPresent());
 
         // test delete is reentrant
         api.delete().uri(PATH_WIDGET + widget.getId())
@@ -133,8 +133,7 @@ class WidgetControllerTest {
         var original = widgetService.create(Widget.builder().width(1).height(2).z(3).build());
 
         // update just width
-        // Note: do not modify original, doing so would update the storage directly
-        var request = Widget.builder().width(11).height(2).z(3).build();
+        var request = original.toBuilder().width(11).build();
 
         api.put().uri(PATH_WIDGET + original.getId())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -147,7 +146,7 @@ class WidgetControllerTest {
                 .jsonPath("height").isEqualTo(original.getHeight())
                 .jsonPath("z").isEqualTo(original.getZ());
 
-        var found = widgetService.getById(original.getId());
+        var found = widgetService.findById(original.getId());
         assertTrue(found.isPresent());
         assertEquals(11, found.get().getWidth());
         assertEquals(original.getHeight(), found.get().getHeight());
