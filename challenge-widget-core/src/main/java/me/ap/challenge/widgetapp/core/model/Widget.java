@@ -1,11 +1,14 @@
 package me.ap.challenge.widgetapp.core.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.*;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
+@AllArgsConstructor(
+        onConstructor = @__(@JsonCreator)
+)
 @NoArgsConstructor
 public class Widget {
     private Long id;
