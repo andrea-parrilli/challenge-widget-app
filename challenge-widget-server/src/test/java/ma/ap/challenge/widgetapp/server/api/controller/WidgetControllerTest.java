@@ -97,6 +97,20 @@ class WidgetControllerTest {
     }
 
     @Test
+    void createValidates() {
+        var widget = Widget.builder().width(1).z(3).build();
+
+        var id = new AtomicReference<Long>();
+        api.post().uri(PATH_WIDGET)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(widget)
+                .exchange()
+                .expectStatus().isBadRequest();
+
+        assertTrue(widgetService.getAll().isEmpty());
+    }
+
+    @Test
     void delete() {
         var widget = widgetService.create(Widget.builder().width(1).height(2).z(3).build());
 
