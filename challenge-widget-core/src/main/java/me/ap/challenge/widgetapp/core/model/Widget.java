@@ -5,6 +5,9 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Models a Widget and acts as a DTO.
+ */
 @Getter
 @Setter
 @Builder(toBuilder = true)
