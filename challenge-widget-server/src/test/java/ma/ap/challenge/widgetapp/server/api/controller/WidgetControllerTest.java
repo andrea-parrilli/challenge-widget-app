@@ -134,7 +134,7 @@ class WidgetControllerTest {
         var original = widgetService.create(Widget.builder().width(1).height(2).z(3).build());
 
         // update just width
-        var request = original.toBuilder().width(11).build();
+        var request = original.toBuilder().id(null).width(11).build();
 
         api.put().uri(PATH_WIDGET + original.getId())
                 .contentType(MediaType.APPLICATION_JSON)
