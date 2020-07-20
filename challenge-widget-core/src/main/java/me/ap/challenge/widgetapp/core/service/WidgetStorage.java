@@ -70,7 +70,7 @@ public class WidgetStorage {
      * @param z the min Z
      * @return the widget with the least Z greater than or equal to the given Z, if present
      */
-    public Optional<Widget> ceilingByZ(Integer z) {
+    public synchronized Optional<Widget> ceilingByZ(Integer z) {
         var ceilingEntry = zIndex.ceilingEntry(z);
 
         if (ceilingEntry == null) {
