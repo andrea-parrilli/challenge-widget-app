@@ -25,13 +25,6 @@
         </developer>
     </developers>
 
-    <!--    TODO setup repo-->
-    <scm>
-        <url>https://github.com/xillio/lochub</url>
-        <connection>scm:git:git://github.com/xillio/lochub.git</connection>
-        <developerConnection>scm:git:git@github.com:xillio/lochub.git</developerConnection>
-    </scm>
-
     <properties>
         <java.version>13</java.version>
     </properties>
