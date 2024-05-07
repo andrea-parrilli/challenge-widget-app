@@ -107,7 +107,8 @@ public class WidgetService {
      * @param updated  the new desired state
      * @return the actual new state
      */
-    public synchronized Widget update(Widget original, Widget updated) {
+    public synchronized Widget update(Widget original,
+                                      Widget updated) {
         updated.setId(original.getId());
 
         // if the z index need change, do it
@@ -127,7 +128,8 @@ public class WidgetService {
      * @return the actual new state
      * @see #update(Widget, Widget) for more context
      */
-    public Widget update(Long id, Widget newState) {
+    public Widget update(Long id,
+                         Widget newState) {
         return update(getById(id), newState);
     }
 

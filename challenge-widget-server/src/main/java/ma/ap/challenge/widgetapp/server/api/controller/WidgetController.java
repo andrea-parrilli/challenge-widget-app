@@ -2,6 +2,8 @@ package ma.ap.challenge.widgetapp.server.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import me.ap.challenge.widgetapp.core.model.Widget;
 import me.ap.challenge.widgetapp.core.service.WidgetService;
@@ -9,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.NoSuchElementException;
@@ -57,7 +57,8 @@ public class WidgetController {
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Replace a Widget")
-    public Widget update(@PathVariable Long id, @Valid @RequestBody Widget widget) {
+    public Widget update(@PathVariable Long id,
+                         @Valid @RequestBody Widget widget) {
         if (widget.getId() != null) {
             throw new IllegalArgumentException("It is not allowed to modify the Widget id");
         }
@@ -68,7 +69,8 @@ public class WidgetController {
     @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update a Widget")
-    public Widget patch(@PathVariable Long id, HttpServletRequest request) throws IOException {
+    public Widget patch(@PathVariable Long id,
+                        HttpServletRequest request) throws IOException {
         var original = widgetService.getById(id);
         // get a clone of the original: the business logic layer is responsible to actually change the visible state of the Widget
         var updated = original.toBuilder().build();

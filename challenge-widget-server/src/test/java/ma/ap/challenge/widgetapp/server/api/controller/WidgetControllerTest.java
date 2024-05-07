@@ -66,9 +66,9 @@ class WidgetControllerTest {
                 .hasSize(2)
                 .consumeWith(result -> {
                     assertEquals(Set.of(widget1.getId(), widget2.getId()),
-                            result.getResponseBody().stream()
-                                    .map(Widget::getId)
-                                    .collect(Collectors.toSet())
+                                 result.getResponseBody().stream()
+                                         .map(Widget::getId)
+                                         .collect(Collectors.toSet())
                     );
                 });
     }
