@@ -67,21 +67,22 @@ public class WidgetService {
      * <p>
      * The new Widget will have a newly generated id.
      * <p>
-     * The method is synchronized as a gross measure to avoid race conditions accessing the set of Zs.
+     * The method is not synchronized, it delegates thread safety to the mutator.
      *
      * @param widget the new Widget desired state
      * @return the actual new Widget state
      */
-    public synchronized Widget create(Widget widget) {
-        widget.setId(random.nextLong());
+    public Widget create(Widget widget) {
+        return storage.save(new Widget(random.nextLong(), widget.getWidth(), widget.getHeight(), ensureZ(widget)));
+    }
+
+    private synchronized Integer ensureZ(Widget widget) {
         if (widget.getZ() == null) {
-            widget.setZ(getMaxZ().orElse(0) + 1);
+            return getMaxZ().orElse(0) + 1;
+        } else {
+            makeSpaceForZ(widget.getZ());
+            return widget.getZ();
         }
-
-        // ensure the new Z is not already occupied
-        makeSpaceForZ(widget.getZ());
-
-        return storage.save(widget);
     }
 
     /**
