@@ -74,16 +74,17 @@ public class ErrorMappings {
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handle(HttpMessageNotReadableException e, HttpServletRequest request) {
-        if (e.getCause() instanceof ValueInstantiationException) {
-            return handle((ValueInstantiationException) e.getCause(), request);
+        var cause = e.getCause();
+        if (cause instanceof ValueInstantiationException causeException) {
+            return handle(causeException, request);
         }
 
-        if (e.getCause() instanceof MismatchedInputException) {
-            return handle((MismatchedInputException) e.getCause(), request);
+        if (cause instanceof MismatchedInputException causeException) {
+            return handle(causeException, request);
         }
 
-        if (e.getCause() instanceof JsonParseException) {
-            return error((JsonParseException) e.getCause(), BAD_REQUEST, request);
+        if (cause instanceof JsonParseException causeException) {
+            return error(causeException, BAD_REQUEST, request);
         }
 
         return error("Bad request", BAD_REQUEST, request);
