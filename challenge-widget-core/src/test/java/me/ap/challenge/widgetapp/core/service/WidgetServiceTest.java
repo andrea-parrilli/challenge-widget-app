@@ -1,12 +1,10 @@
 package me.ap.challenge.widgetapp.core.service;
 
 import me.ap.challenge.widgetapp.core.model.Widget;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Due to the tight coupling between {@link WidgetService} and {@link WidgetStorage},
@@ -18,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class WidgetServiceTest {
     private WidgetService service;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         service = new WidgetService(new WidgetStorage());
     }

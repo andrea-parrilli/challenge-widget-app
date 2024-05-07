@@ -1,19 +1,19 @@
 package me.ap.challenge.widgetapp.core.service;
 
 import me.ap.challenge.widgetapp.core.model.Widget;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WidgetStorageTest {
     private WidgetStorage storage;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         storage = new WidgetStorage();
     }

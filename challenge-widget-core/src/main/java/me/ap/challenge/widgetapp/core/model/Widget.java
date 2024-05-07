@@ -1,9 +1,9 @@
 package me.ap.challenge.widgetapp.core.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
 
 /**
  * Models a Widget and acts as a DTO.
