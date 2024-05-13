@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import me.ap.challenge.widgetapp.core.deserialize.Buildable;
 import me.ap.challenge.widgetapp.core.deserialize.ToBuilderable;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

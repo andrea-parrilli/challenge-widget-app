@@ -21,7 +21,7 @@ public class WidgetAppServer {
      * @return the configuration bean
      */
     @Bean
-    public Jackson2ObjectMapperBuilder cutomizeObjectMapper() {
+    public Jackson2ObjectMapperBuilder customizeObjectMapper() {
         return new Jackson2ObjectMapperBuilder().visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
     }
 }

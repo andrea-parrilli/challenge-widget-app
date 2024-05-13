@@ -21,7 +21,7 @@ public class WidgetStorage {
     private final ConcurrentSkipListMap<Integer, Widget> zIndex = new ConcurrentSkipListMap<>();
 
     public synchronized Widget save(Widget widget) {
-        zIndex.put(widget.z (), widget);
+        zIndex.put(widget.z(), widget);
         widgetDb.put(widget.id(), widget);
 
         return widget;

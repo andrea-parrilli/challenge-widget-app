@@ -29,10 +29,6 @@ class WidgetControllerTest {
     @Autowired
     private WidgetService widgetService;
 
-    @BeforeEach
-    void setUp() {
-    }
-
     @AfterEach
     void tearDown() {
         widgetService.getAll().stream()
@@ -64,13 +60,11 @@ class WidgetControllerTest {
                 .expectStatus().isOk()
                 .expectBodyList(Widget.class)
                 .hasSize(2)
-                .consumeWith(result -> {
-                    assertEquals(Set.of(widget1.id(), widget2.id()),
-                                 result.getResponseBody().stream()
-                                         .map(Widget::id)
-                                         .collect(Collectors.toSet())
-                    );
-                });
+                .consumeWith(result -> assertEquals(Set.of(widget1.id(), widget2.id()),
+                        result.getResponseBody().stream()
+                                .map(Widget::id)
+                                .collect(Collectors.toSet())
+                ));
     }
 
     @Test
@@ -101,7 +95,6 @@ class WidgetControllerTest {
     void createValidates() {
         var widget = Widget.builder().width(1).z(3).build();
 
-        var id = new AtomicReference<Long>();
         api.post().uri(PATH_WIDGET)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(widget)

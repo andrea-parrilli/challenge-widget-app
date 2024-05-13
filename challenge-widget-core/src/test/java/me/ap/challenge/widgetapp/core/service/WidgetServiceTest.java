@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * these tests will involve a real instance of the storage engine.
  * <p>
  * Main reason is to avoid mocking complex methods of the storage engine.
- * If the storage engine would become pluggable, then these tests must be refined and concern the persistence layer only.
+ * If the storage engine became pluggable, then these tests needed to be refined and concern the persistence layer only.
  */
 public class WidgetServiceTest {
     private WidgetService service;

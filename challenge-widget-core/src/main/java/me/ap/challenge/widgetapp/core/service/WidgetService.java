@@ -146,7 +146,7 @@ public class WidgetService {
             for (Integer currentZ : storage.keysGreaterOrEqualByZDesc(z)) {
                 storage.deleteByZ(currentZ)
                         .map(Widget::toBuilder)
-                        .map(widgetBuilder -> widgetBuilder.z(currentZ +1))
+                        .map(widgetBuilder -> widgetBuilder.z(currentZ + 1))
                         .map(Widget.WidgetBuilder::build)
                         .ifPresent(storage::save);
             }

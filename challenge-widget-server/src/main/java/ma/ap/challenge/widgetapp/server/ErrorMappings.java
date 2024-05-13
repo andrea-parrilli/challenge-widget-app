@@ -32,8 +32,8 @@ public class ErrorMappings {
                                                     HttpServletRequest request) {
         LOGGER.warn("Exception during request", e);
         return error("An internal server error occurred. Please contact support if this issue persists.",
-                     HttpStatus.INTERNAL_SERVER_ERROR,
-                     request);
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                request);
     }
 
     private ResponseEntity<ErrorResponse> error(Exception e,
@@ -48,10 +48,10 @@ public class ErrorMappings {
                                                 HttpServletRequest request) {
         return ResponseEntity.status(status)
                 .body(new ErrorResponse(ZonedDateTime.now(),
-                                        status.value(),
-                                        status.getReasonPhrase(),
-                                        message,
-                                        request.getRequestURI()));
+                        status.value(),
+                        status.getReasonPhrase(),
+                        message,
+                        request.getRequestURI()));
     }
 
     @ExceptionHandler
@@ -93,10 +93,10 @@ public class ErrorMappings {
     public ResponseEntity<ErrorResponse> handle(MismatchedInputException e,
                                                 HttpServletRequest request) {
         var message = String.format("The structure or type of '%s' is invalid",
-                                    e.getPath()
-                                            .stream()
-                                            .map(JsonMappingException.Reference::getFieldName)
-                                            .collect(Collectors.joining(".")));
+                e.getPath()
+                        .stream()
+                        .map(JsonMappingException.Reference::getFieldName)
+                        .collect(Collectors.joining(".")));
         return error(message, BAD_REQUEST, request);
     }
 
@@ -104,10 +104,10 @@ public class ErrorMappings {
     public ResponseEntity<ErrorResponse> handle(ValueInstantiationException e,
                                                 HttpServletRequest request) {
         var message = String.format("Field '%s' is invalid",
-                                    e.getPath()
-                                            .stream()
-                                            .map(JsonMappingException.Reference::getFieldName)
-                                            .collect(Collectors.joining(".")));
+                e.getPath()
+                        .stream()
+                        .map(JsonMappingException.Reference::getFieldName)
+                        .collect(Collectors.joining(".")));
         return error(message, BAD_REQUEST, request);
     }
 
