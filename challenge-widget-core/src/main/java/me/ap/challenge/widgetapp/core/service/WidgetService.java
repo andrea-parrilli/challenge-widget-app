@@ -67,21 +67,22 @@ public class WidgetService {
      * <p>
      * The new Widget will have a newly generated id.
      * <p>
-     * The method is synchronized as a gross measure to avoid race conditions accessing the set of Zs.
+     * The method is not synchronized, it delegates thread safety to the mutator.
      *
      * @param widget the new Widget desired state
      * @return the actual new Widget state
      */
-    public synchronized Widget create(Widget widget) {
-        widget.setId(random.nextLong());
-        if (widget.getZ() == null) {
-            widget.setZ(getMaxZ().orElse(0) + 1);
+    public Widget create(Widget widget) {
+        return storage.save(new Widget(random.nextLong(), widget.width(), widget.height(), ensureZ(widget)));
+    }
+
+    private synchronized Integer ensureZ(Widget widget) {
+        if (widget.z() == null) {
+            return getMaxZ().orElse(0) + 1;
+        } else {
+            makeSpaceForZ(widget.z());
+            return widget.z();
         }
-
-        // ensure the new Z is not already occupied
-        makeSpaceForZ(widget.getZ());
-
-        return storage.save(widget);
     }
 
     /**
@@ -109,15 +110,15 @@ public class WidgetService {
      */
     public synchronized Widget update(Widget original,
                                       Widget updated) {
-        updated.setId(original.getId());
-
-        // if the z index need change, do it
-        if (!original.getZ().equals(updated.getZ())) {
-            storage.deleteById(updated.getId());
-            makeSpaceForZ(updated.getZ());
+        // if the z index need change, remove old widget and make space for new Z
+        if (!original.z().equals(updated.z())) {
+            storage.deleteById(original.id());
+            makeSpaceForZ(updated.z());
         }
 
-        return storage.save(updated);
+        var toSave = updated.toBuilder().id(original.id()).build();
+
+        return storage.save(toSave);
     }
 
     /**
@@ -143,11 +144,11 @@ public class WidgetService {
         if (storage.findByZ(z).isPresent()) {
             // move widgets from Z to inf by 1
             for (Integer currentZ : storage.keysGreaterOrEqualByZDesc(z)) {
-                var updatedWidget = storage.deleteByZ(currentZ);
-                if (updatedWidget.isPresent()) {
-                    updatedWidget.get().setZ(currentZ + 1);
-                    storage.save(updatedWidget.get());
-                }
+                storage.deleteByZ(currentZ)
+                        .map(Widget::toBuilder)
+                        .map(widgetBuilder -> widgetBuilder.z(currentZ +1))
+                        .map(Widget.WidgetBuilder::build)
+                        .ifPresent(storage::save);
             }
         }
     }

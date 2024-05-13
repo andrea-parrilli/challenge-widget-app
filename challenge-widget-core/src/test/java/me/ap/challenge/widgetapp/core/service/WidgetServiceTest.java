@@ -24,8 +24,8 @@ public class WidgetServiceTest {
     @Test
     public void testIdIsAssigned() {
         var widget = service.create(Widget.builder().id(1L).height(11).width(12).z(1).build());
-        assertNotNull(widget.getId());
-        assertNotEquals(1, widget.getId());
+        assertNotNull(widget.id());
+        assertNotEquals(1, widget.id());
     }
 
     @Test
@@ -34,9 +34,9 @@ public class WidgetServiceTest {
         var widget2 = service.create(Widget.builder().id(2L).height(21).width(22).z(2).build());
         var widget3 = service.create(Widget.builder().id(3L).height(31).width(32).z(1).build());
 
-        assertEquals(Integer.valueOf(2), widget1.getZ());
-        assertEquals(Integer.valueOf(3), widget2.getZ());
-        assertEquals(Integer.valueOf(1), widget3.getZ());
+        assertEquals(Integer.valueOf(2), service.getById(widget1.id()).z());
+        assertEquals(Integer.valueOf(3), service.getById(widget2.id()).z());
+        assertEquals(Integer.valueOf(1), service.getById(widget3.id()).z());
     }
 
     @Test
@@ -46,9 +46,9 @@ public class WidgetServiceTest {
 
         var updatedWidget = service.update(original, newState);
 
-        assertEquals(Integer.valueOf(22), updatedWidget.getHeight());
-        assertEquals(Integer.valueOf(24), updatedWidget.getWidth());
-        assertEquals(Integer.valueOf(1), updatedWidget.getZ());
+        assertEquals(Integer.valueOf(22), updatedWidget.height());
+        assertEquals(Integer.valueOf(24), updatedWidget.width());
+        assertEquals(Integer.valueOf(1), updatedWidget.z());
         assertEquals(1, service.getAll().size());
     }
 
@@ -62,12 +62,12 @@ public class WidgetServiceTest {
 
         assertEquals(2, service.getAll().size());
 
-        assertEquals(widget1.getId(), updatedWidget.getId());
-        assertEquals(Integer.valueOf(22), updatedWidget.getHeight());
-        assertEquals(Integer.valueOf(24), updatedWidget.getWidth());
-        assertEquals(Integer.valueOf(2), updatedWidget.getZ());
+        assertEquals(widget1.id(), updatedWidget.id());
+        assertEquals(Integer.valueOf(22), updatedWidget.height());
+        assertEquals(Integer.valueOf(24), updatedWidget.width());
+        assertEquals(Integer.valueOf(2), updatedWidget.z());
 
-        assertEquals(Integer.valueOf(3), service.getById(widget2.getId()).getZ());
+        assertEquals(Integer.valueOf(3), service.getById(widget2.id()).z());
     }
 
     @Test
@@ -80,11 +80,11 @@ public class WidgetServiceTest {
 
         assertEquals(2, service.getAll().size());
 
-        assertEquals(widget1.getId(), updatedWidget.getId());
-        assertEquals(Integer.valueOf(22), updatedWidget.getHeight());
-        assertEquals(Integer.valueOf(24), updatedWidget.getWidth());
-        assertEquals(Integer.valueOf(2), updatedWidget.getZ());
+        assertEquals(widget1.id(), updatedWidget.id());
+        assertEquals(Integer.valueOf(22), updatedWidget.height());
+        assertEquals(Integer.valueOf(24), updatedWidget.width());
+        assertEquals(Integer.valueOf(2), updatedWidget.z());
 
-        assertEquals(Integer.valueOf(3), service.getById(widget2.getId()).getZ());
+        assertEquals(Integer.valueOf(3), service.getById(widget2.id()).z());
     }
 }

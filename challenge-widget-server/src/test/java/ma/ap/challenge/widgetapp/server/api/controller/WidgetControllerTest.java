@@ -36,7 +36,7 @@ class WidgetControllerTest {
     @AfterEach
     void tearDown() {
         widgetService.getAll().stream()
-                .map(Widget::getId)
+                .map(Widget::id)
                 .forEach(widgetService::delete);
     }
 
@@ -44,14 +44,14 @@ class WidgetControllerTest {
     void getWidget() {
         var widget = widgetService.create(Widget.builder().width(1).height(2).z(3).build());
 
-        api.get().uri(PATH_WIDGET + widget.getId())
+        api.get().uri(PATH_WIDGET + widget.id())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("id").isEqualTo(widget.getId())
-                .jsonPath("width").isEqualTo(widget.getWidth())
-                .jsonPath("height").isEqualTo(widget.getHeight())
-                .jsonPath("z").isEqualTo(widget.getZ());
+                .jsonPath("id").isEqualTo(widget.id())
+                .jsonPath("width").isEqualTo(widget.width())
+                .jsonPath("height").isEqualTo(widget.height())
+                .jsonPath("z").isEqualTo(widget.z());
     }
 
     @Test
@@ -65,9 +65,9 @@ class WidgetControllerTest {
                 .expectBodyList(Widget.class)
                 .hasSize(2)
                 .consumeWith(result -> {
-                    assertEquals(Set.of(widget1.getId(), widget2.getId()),
+                    assertEquals(Set.of(widget1.id(), widget2.id()),
                                  result.getResponseBody().stream()
-                                         .map(Widget::getId)
+                                         .map(Widget::id)
                                          .collect(Collectors.toSet())
                     );
                 });
@@ -86,15 +86,15 @@ class WidgetControllerTest {
                 .expectBody()
                 .jsonPath("id").isNotEmpty()
                 .jsonPath("id").value(id::set)
-                .jsonPath("width").isEqualTo(widget.getWidth())
-                .jsonPath("height").isEqualTo(widget.getHeight())
-                .jsonPath("z").isEqualTo(widget.getZ());
+                .jsonPath("width").isEqualTo(widget.width())
+                .jsonPath("height").isEqualTo(widget.height())
+                .jsonPath("z").isEqualTo(widget.z());
 
         var found = widgetService.findById(id.get());
         assertTrue(found.isPresent());
-        assertEquals(widget.getHeight(), found.get().getHeight());
-        assertEquals(widget.getWidth(), found.get().getWidth());
-        assertEquals(widget.getZ(), found.get().getZ());
+        assertEquals(widget.height(), found.get().height());
+        assertEquals(widget.width(), found.get().width());
+        assertEquals(widget.z(), found.get().z());
     }
 
     @Test
@@ -115,16 +115,16 @@ class WidgetControllerTest {
     void delete() {
         var widget = widgetService.create(Widget.builder().width(1).height(2).z(3).build());
 
-        api.delete().uri(PATH_WIDGET + widget.getId())
+        api.delete().uri(PATH_WIDGET + widget.id())
                 .exchange()
                 .expectStatus().isNoContent()
                 .expectBody()
                 .isEmpty();
 
-        assertFalse(widgetService.findById(widget.getId()).isPresent());
+        assertFalse(widgetService.findById(widget.id()).isPresent());
 
         // test delete is reentrant
-        api.delete().uri(PATH_WIDGET + widget.getId())
+        api.delete().uri(PATH_WIDGET + widget.id())
                 .exchange()
                 .expectStatus().isNoContent();
     }
@@ -136,22 +136,22 @@ class WidgetControllerTest {
         // update just width
         var request = original.toBuilder().id(null).width(11).build();
 
-        api.put().uri(PATH_WIDGET + original.getId())
+        api.put().uri(PATH_WIDGET + original.id())
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(request)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("id").isEqualTo(original.getId())
+                .jsonPath("id").isEqualTo(original.id())
                 .jsonPath("width").isEqualTo(11)
-                .jsonPath("height").isEqualTo(original.getHeight())
-                .jsonPath("z").isEqualTo(original.getZ());
+                .jsonPath("height").isEqualTo(original.height())
+                .jsonPath("z").isEqualTo(original.z());
 
-        var found = widgetService.findById(original.getId());
+        var found = widgetService.findById(original.id());
         assertTrue(found.isPresent());
-        assertEquals(11, found.get().getWidth());
-        assertEquals(original.getHeight(), found.get().getHeight());
-        assertEquals(original.getZ(), found.get().getZ());
+        assertEquals(11, found.get().width());
+        assertEquals(original.height(), found.get().height());
+        assertEquals(original.z(), found.get().z());
     }
 
     @Test
@@ -161,21 +161,21 @@ class WidgetControllerTest {
         // update just width
         var request = Map.of("width", 11);
 
-        api.patch().uri(PATH_WIDGET + original.getId())
+        api.patch().uri(PATH_WIDGET + original.id())
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(request)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("id").isEqualTo(original.getId())
+                .jsonPath("id").isEqualTo(original.id())
                 .jsonPath("width").isEqualTo(11)
-                .jsonPath("height").isEqualTo(original.getHeight())
-                .jsonPath("z").isEqualTo(original.getZ());
+                .jsonPath("height").isEqualTo(original.height())
+                .jsonPath("z").isEqualTo(original.z());
 
-        var found = widgetService.findById(original.getId());
+        var found = widgetService.findById(original.id());
         assertTrue(found.isPresent());
-        assertEquals(11, found.get().getWidth());
-        assertEquals(original.getHeight(), found.get().getHeight());
-        assertEquals(original.getZ(), found.get().getZ());
+        assertEquals(11, found.get().width());
+        assertEquals(original.height(), found.get().height());
+        assertEquals(original.z(), found.get().z());
     }
 }

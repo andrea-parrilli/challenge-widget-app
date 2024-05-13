@@ -21,8 +21,8 @@ public class WidgetStorage {
     private final ConcurrentSkipListMap<Integer, Widget> zIndex = new ConcurrentSkipListMap<>();
 
     public synchronized Widget save(Widget widget) {
-        zIndex.put(widget.getZ(), widget);
-        widgetDb.put(widget.getId(), widget);
+        zIndex.put(widget.z (), widget);
+        widgetDb.put(widget.id(), widget);
 
         return widget;
     }
@@ -31,7 +31,7 @@ public class WidgetStorage {
         var widget = zIndex.remove(z);
 
         if (widget != null) {
-            widgetDb.remove(widget.getId());
+            widgetDb.remove(widget.id());
         }
 
         return Optional.ofNullable(widget);
@@ -41,7 +41,7 @@ public class WidgetStorage {
         var widget = widgetDb.remove(id);
 
         if (widget != null) {
-            zIndex.remove(widget.getZ());
+            zIndex.remove(widget.z());
         }
 
         return Optional.ofNullable(widget);
