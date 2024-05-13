@@ -8,6 +8,9 @@ import me.ap.challenge.widgetapp.core.deserialize.ToBuilderable;
 import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 @Service
 @AllArgsConstructor
 public class DeserializerForUpdating {
@@ -17,6 +20,14 @@ public class DeserializerForUpdating {
         B builder = record.toBuilder();
 
         mapper.readerForUpdating(builder).readValue(json);
+
+        return builder.build();
+    }
+
+    public <R extends ToBuilderable<B>, B extends Buildable<R>> R updateRecordFromJson(R record, InputStream jsonStream) throws IOException {
+        B builder = record.toBuilder();
+
+        mapper.readerForUpdating(builder).readValue(jsonStream);
 
         return builder.build();
     }
