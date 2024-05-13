@@ -25,10 +25,10 @@ public class WidgetStorageTest {
         var maybeWidget = storage.findById(33L);
         assertTrue(maybeWidget.isPresent());
         var widget = maybeWidget.get();
-        assertEquals(Long.valueOf(33), widget.getId());
-        assertEquals(Integer.valueOf(1), widget.getHeight());
-        assertEquals(Integer.valueOf(2), widget.getWidth());
-        assertEquals(Integer.valueOf(-3), widget.getZ());
+        assertEquals(Long.valueOf(33), widget.id());
+        assertEquals(Integer.valueOf(1), widget.height());
+        assertEquals(Integer.valueOf(2), widget.width());
+        assertEquals(Integer.valueOf(-3), widget.z());
     }
 
     @Test
@@ -37,7 +37,7 @@ public class WidgetStorageTest {
         storage.save(Widget.builder().id(2L).height(21).width(22).z(-23).build());
         storage.save(Widget.builder().id(3L).height(31).width(32).z(33).build());
 
-        var allWidgetsSorted = storage.findAll().stream().map(Widget::getZ).collect(Collectors.toList());
+        var allWidgetsSorted = storage.findAll().stream().map(Widget::z).collect(Collectors.toList());
         assertEquals(List.of(-23, 13, 33), allWidgetsSorted);
     }
 
@@ -49,6 +49,6 @@ public class WidgetStorageTest {
 
         var ceiling2 = storage.ceilingByZ(2);
         assertTrue(ceiling2.isPresent());
-        assertEquals(widget3.getId(), ceiling2.get().getId());
+        assertEquals(widget3.id(), ceiling2.get().id());
     }
 }
