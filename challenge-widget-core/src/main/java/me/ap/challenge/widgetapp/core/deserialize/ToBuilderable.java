@@ -1,5 +1,7 @@
-package ma.ap.challenge.widgetapp.server.deserialize;
+package me.ap.challenge.widgetapp.core.deserialize;
 
 public interface ToBuilderable<T> {
-    public T toBuilder();
+    default T toBuilder() {
+        return null;
+    }
 }

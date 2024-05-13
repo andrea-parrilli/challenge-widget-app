@@ -1,5 +1,7 @@
-package ma.ap.challenge.widgetapp.server.deserialize;
+package me.ap.challenge.widgetapp.core.deserialize;
 
 public interface Buildable<T> {
-    public T build();
+    default T build() {
+        return null;
+    }
 }
