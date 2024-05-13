@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import ma.ap.challenge.widgetapp.server.deserialize.DeserializerForUpdating;
 import me.ap.challenge.widgetapp.core.model.Widget;
 import me.ap.challenge.widgetapp.core.service.WidgetService;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ import static ma.ap.challenge.widgetapp.server.ApiPaths.PATH_WIDGET;
 @AllArgsConstructor
 public class WidgetController {
     private final WidgetService widgetService;
-    private final ObjectMapper mapper;
+    private final DeserializerForUpdating updater;
 
     @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get a Widget by id")
@@ -70,8 +71,7 @@ public class WidgetController {
     @Operation(summary = "Update a Widget")
     public Widget patch(@PathVariable Long id, HttpServletRequest request) throws IOException {
         var original = widgetService.getById(id);
-        var updatedBuilder = original.toBuilder();
-        Widget updated = ((Widget.WidgetBuilder) mapper.readerForUpdating(updatedBuilder).readValue(request.getInputStream())).build();
+        Widget updated = updater.updateRecordFromJson(original, request.getInputStream());
 
         return widgetService.update(original, updated);
     }
