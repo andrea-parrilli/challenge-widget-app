@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WidgetTest {
 
-    private Widget widget = new Widget(1L, 2, 3, 4);
+    private final Widget widget = new Widget(1L, 2, 3, 4);
 
     @Test
     void baseToBuilderableContract() {
