@@ -70,7 +70,7 @@ public class WidgetController {
     @Operation(summary = "Update a Widget")
     public Widget patch(@PathVariable Long id, HttpServletRequest request) throws IOException {
         var original = widgetService.getById(id);
-        Widget updated = updater.updateRecordFromJson(original, request.getInputStream());
+        Widget updated = updater.updateFromJson(original, request.getInputStream());
 
         return widgetService.update(original, updated);
     }

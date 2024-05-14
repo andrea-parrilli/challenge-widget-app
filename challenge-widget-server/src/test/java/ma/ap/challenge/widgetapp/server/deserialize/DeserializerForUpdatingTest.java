@@ -24,7 +24,7 @@ class DeserializerForUpdatingTest {
                 {"z":44}
                 """;
 
-        Widget updated = updater.updateRecordFromJson(original, json);
+        Widget updated = updater.updateFromJson(original, json);
 
         assertEquals(44, updated.z());
     }
@@ -36,7 +36,7 @@ class DeserializerForUpdatingTest {
                 {"z":44}
                 """;
         var jsonStream = new ByteArrayInputStream(json.getBytes());
-        Widget updated = updater.updateRecordFromJson(original, jsonStream);
+        Widget updated = updater.updateFromJson(original, jsonStream);
 
         assertEquals(44, updated.z());
     }
