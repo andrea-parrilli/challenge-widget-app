@@ -26,10 +26,10 @@ public class DeserializerForUpdating {
      * {@code x} on the builder and then to return a newly built instance of {@code R}.
      *
      * @param record the instance to update
-     * @param json the JSON containing the properties to update.
+     * @param json   the JSON containing the properties to update.
+     * @param <R>    the type of the DTO tu update
+     * @param <B>    the type of the builder that builds {@code R}
      * @return a new instance of {@code R} with the same properties of {@code record}, modified by the given JSON.
-     * @param <R> the type of the DTO tu update
-     * @param <B> the type of the builder that builds {@code R}
      * @throws JsonProcessingException when the given JSON is invalid, depending on the {@link ObjectMapper} configuration.
      */
     public <R extends ToBuilderable<B>, B extends Buildable<R>> R updateFromJson(R record, String json) throws JsonProcessingException {
@@ -47,13 +47,13 @@ public class DeserializerForUpdating {
      * Then calling this method with a stream containing {@code {"x":33}} has the effect of converting {@code r} to its builder, setting
      * {@code x = 33} on the builder and then to return a newly built instance of {@code R}.
      *
-     * @param record the instance to update
+     * @param record     the instance to update
      * @param jsonStream a JSON stream containing the properties to update.
+     * @param <R>        the type of the DTO tu update
+     * @param <B>        the type of the builder that builds {@code R}
      * @return a new instance of {@code R} with the same properties of {@code record}, modified by the given JSON.
-     * @param <R> the type of the DTO tu update
-     * @param <B> the type of the builder that builds {@code R}
      * @throws JsonProcessingException when the given JSON is invalid, depending on the {@link ObjectMapper} configuration.
-     * @throws IOException when the stream is not readable.
+     * @throws IOException             when the stream is not readable.
      */
     public <R extends ToBuilderable<B>, B extends Buildable<R>> R updateFromJson(R record, InputStream jsonStream) throws IOException {
         B builder = record.toBuilder();

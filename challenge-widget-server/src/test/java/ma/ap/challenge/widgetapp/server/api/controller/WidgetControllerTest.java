@@ -4,7 +4,6 @@ import ma.ap.challenge.widgetapp.server.WidgetAppServer;
 import me.ap.challenge.widgetapp.core.model.Widget;
 import me.ap.challenge.widgetapp.core.service.WidgetService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

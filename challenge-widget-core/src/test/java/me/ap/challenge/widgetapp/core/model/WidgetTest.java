@@ -2,11 +2,11 @@ package me.ap.challenge.widgetapp.core.model;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WidgetTest {
 
-    private Widget widget = new Widget(1L, 2,3, 4);
+    private Widget widget = new Widget(1L, 2, 3, 4);
 
     @Test
     void baseToBuilderableContract() {
