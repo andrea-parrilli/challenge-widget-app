@@ -16,7 +16,6 @@ import java.util.Random;
 @Component
 public class WidgetService {
     private final WidgetRepo widgetRepo;
-    private final Random random = new Random();
 
     public WidgetService(WidgetRepo widgetRepo) {
         this.widgetRepo = widgetRepo;
@@ -79,7 +78,8 @@ public class WidgetService {
         return widgetRepo.save(ensureZ(widget));
     }
 
-    protected synchronized Widget ensureZ(Widget widget) {
+    @Transactional
+    protected Widget ensureZ(Widget widget) {
         if (widget.z() == null) {
             return widget.z(getMaxZ().orElse(0) + 1);
         } else {
@@ -104,15 +104,13 @@ public class WidgetService {
      * <p>
      * As with {@link #create(Widget)}, the new actual state may differ from the desired one
      * and/or other Widgets might have been modified.
-     * <p>
-     * The method is synchronized as a gross measure to avoid race conditions accessing the set of Zs.
      *
      * @param original the currently stored state
      * @param updated  the new desired state
      * @return the actual new state
      */
     @Transactional
-    public synchronized Widget update(Widget original,
+    public Widget update(Widget original,
                                       Widget updated) {
         // if the z index need change, remove old widget and make space for new Z
         if (!original.z().equals(updated.z())) {

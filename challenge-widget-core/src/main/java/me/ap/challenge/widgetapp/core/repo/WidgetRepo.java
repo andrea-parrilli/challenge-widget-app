@@ -4,6 +4,7 @@ import me.ap.challenge.widgetapp.core.model.Widget;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -12,8 +13,6 @@ import java.util.Optional;
 @Repository
 public interface WidgetRepo extends CrudRepository<Widget, Long> {
     Optional<Widget> findById(Long id);
-
-    Optional<Widget> findByZ(Integer z);
 
     Collection<Widget> findAll();
 
@@ -29,7 +28,13 @@ public interface WidgetRepo extends CrudRepository<Widget, Long> {
     @Query("SELECT max(z) FROM Widget")
     Optional<Widget> findMaxZ();
 
+    /**
+     * Increment the {@code z} property of all {@link Widget} with {@code z} greater than or equal to the given argument
+     * by one.
+     *
+     * @param z the threshold for the shift
+     */
     @Modifying
-    @Query("UPDATE Widget SET z=z+1 WHERE z>=?1")
-    void shiftZbyOne(Integer z);
+    @Query("UPDATE Widget SET z=z+1 WHERE z>=:z_to_free")
+    void shiftZbyOne(@Param("z_to_free") Integer z);
 }
