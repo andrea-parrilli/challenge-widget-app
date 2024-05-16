@@ -1,6 +1,8 @@
 package me.ap.challenge.widgetapp.core.service;
 
+import jakarta.transaction.Transactional;
 import me.ap.challenge.widgetapp.core.model.Widget;
+import me.ap.challenge.widgetapp.core.repo.WidgetRepo;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -13,11 +15,11 @@ import java.util.Random;
  */
 @Component
 public class WidgetService {
-    private final WidgetStorage storage;
+    private final WidgetRepo widgetRepo;
     private final Random random = new Random();
 
-    public WidgetService(WidgetStorage storage) {
-        this.storage = storage;
+    public WidgetService(WidgetRepo widgetRepo) {
+        this.widgetRepo = widgetRepo;
     }
 
     /**
@@ -27,7 +29,7 @@ public class WidgetService {
      * @return the desired Widget, if present
      */
     public Optional<Widget> findById(Long id) {
-        return storage.findById(id);
+        return widgetRepo.findById(id);
     }
 
     /**
@@ -47,7 +49,7 @@ public class WidgetService {
      * @return a collection containing all stored Widgets
      */
     public Collection<Widget> getAll() {
-        return storage.findAll();
+        return widgetRepo.findAll();
     }
 
     /**
@@ -56,7 +58,7 @@ public class WidgetService {
      * @return the maximum {@code Z}, if any Widget exists
      */
     public Optional<Integer> getMaxZ() {
-        return storage.getMaxZ();
+        return widgetRepo.findMaxZ().map(Widget::z);
     }
 
     /**
@@ -72,16 +74,17 @@ public class WidgetService {
      * @param widget the new Widget desired state
      * @return the actual new Widget state
      */
+    @Transactional
     public Widget create(Widget widget) {
-        return storage.save(new Widget(random.nextLong(), widget.width(), widget.height(), ensureZ(widget)));
+        return widgetRepo.save(ensureZ(widget));
     }
 
-    private synchronized Integer ensureZ(Widget widget) {
+    protected synchronized Widget ensureZ(Widget widget) {
         if (widget.z() == null) {
-            return getMaxZ().orElse(0) + 1;
+            return widget.z(getMaxZ().orElse(0) + 1);
         } else {
             makeSpaceForZ(widget.z());
-            return widget.z();
+            return widget;
         }
     }
 
@@ -93,7 +96,7 @@ public class WidgetService {
      * @param id the id of the Widget to delete
      */
     public void delete(Long id) {
-        storage.deleteById(id);
+        widgetRepo.deleteById(id);
     }
 
     /**
@@ -108,17 +111,16 @@ public class WidgetService {
      * @param updated  the new desired state
      * @return the actual new state
      */
+    @Transactional
     public synchronized Widget update(Widget original,
                                       Widget updated) {
         // if the z index need change, remove old widget and make space for new Z
         if (!original.z().equals(updated.z())) {
-            storage.deleteById(original.id());
+            widgetRepo.deleteById(original.id());
             makeSpaceForZ(updated.z());
         }
 
-        var toSave = updated.toBuilder().id(original.id()).build();
-
-        return storage.save(toSave);
+        return widgetRepo.save(updated);
     }
 
     /**
@@ -131,6 +133,7 @@ public class WidgetService {
      */
     public Widget update(Long id,
                          Widget newState) {
+        newState.id(id);
         return update(getById(id), newState);
     }
 
@@ -139,17 +142,12 @@ public class WidgetService {
      *
      * @param z the Z to free up
      */
+    @Transactional
     private void makeSpaceForZ(int z) {
         // find if the new widget Z already exists
-        if (storage.findByZ(z).isPresent()) {
+        if (widgetRepo.existsWidgetByZ(z)) {
             // move widgets from Z to inf by 1
-            for (Integer currentZ : storage.keysGreaterOrEqualByZDesc(z)) {
-                storage.deleteByZ(currentZ)
-                        .map(Widget::toBuilder)
-                        .map(widgetBuilder -> widgetBuilder.z(currentZ + 1))
-                        .map(Widget.WidgetBuilder::build)
-                        .ifPresent(storage::save);
-            }
+            widgetRepo.shiftZbyOne(z);
         }
     }
 }
