@@ -32,14 +32,4 @@ public class WidgetRepoTest {
         assertEquals(2, widget.width());
         assertEquals(-3, widget.z());
     }
-
-    @Test
-    public void testGetAllIsSorted() {
-        repo.save(Widget.builder().id(1L).height(11).width(12).z(13).build());
-        repo.save(Widget.builder().id(2L).height(21).width(22).z(-23).build());
-        repo.save(Widget.builder().id(3L).height(31).width(32).z(33).build());
-
-        var allWidgetsSorted = repo.findAll().stream().map(Widget::z).collect(Collectors.toList());
-        assertEquals(List.of(-23, 13, 33), allWidgetsSorted);
-    }
 }

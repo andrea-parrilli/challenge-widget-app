@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.Random;
 
 /**
  * Business logic for {@link Widget}s.
@@ -111,7 +110,7 @@ public class WidgetService {
      */
     @Transactional
     public Widget update(Widget original,
-                                      Widget updated) {
+                         Widget updated) {
         // if the z index need change, remove old widget and make space for new Z
         if (!original.z().equals(updated.z())) {
             widgetRepo.deleteById(original.id());
@@ -119,20 +118,6 @@ public class WidgetService {
         }
 
         return widgetRepo.save(updated);
-    }
-
-    /**
-     * Updates the given stored {@link Widget} state, identified by id, with the desired new one.
-     *
-     * @param id       the id of the Widget to update
-     * @param newState the new Widget state
-     * @return the actual new state
-     * @see #update(Widget, Widget) for more context
-     */
-    public Widget update(Long id,
-                         Widget newState) {
-        newState.id(id);
-        return update(getById(id), newState);
     }
 
     /**

@@ -16,6 +16,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Widget {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
