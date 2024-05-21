@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
- * Marker interface for Spring to scan the core package.
+ * Spring configuration for tests.
  */
 @SpringBootApplication
 @EnableJpaRepositories
