@@ -43,7 +43,7 @@ public class ApiModelAdapter {
 
     public WidgetDto update(WidgetDto original, WidgetDto modified) {
         // Make sure the id is not changed, otherwise a new entity could be created
-        if(!original.id().equals(modified.id())) {
+        if (!original.id().equals(modified.id())) {
             throw new IllegalArgumentException("It is not allowed to modify the Widget id");
         }
 

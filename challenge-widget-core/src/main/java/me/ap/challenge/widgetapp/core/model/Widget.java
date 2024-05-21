@@ -19,10 +19,12 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode
 public class Widget {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Long id;
-    @NotNull Integer width;
-    @NotNull Integer height;
+    @NotNull
+    Integer width;
+    @NotNull
+    Integer height;
     @NotNull
     Integer z;
 }

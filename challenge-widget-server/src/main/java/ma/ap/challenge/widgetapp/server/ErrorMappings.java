@@ -157,7 +157,7 @@ public class ErrorMappings {
     }
 
     private String formatMessage(ObjectError objectError) {
-        if(objectError instanceof FieldError fieldError) {
+        if (objectError instanceof FieldError fieldError) {
             return String.format("field '%s' is invalid: %s", fieldError.getField(), fieldError.getRejectedValue());
         } else {
             return objectError.getDefaultMessage();
