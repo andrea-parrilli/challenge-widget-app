@@ -12,9 +12,13 @@
         <module name="challenge-widget-server" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="challenge-widget-api" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="challenge-widget-api" options="-parameters" />
       <module name="challenge-widget-core" options="-parameters" />
       <module name="challenge-widget-server" options="-parameters" />
     </option>
