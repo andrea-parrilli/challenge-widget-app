@@ -4,3 +4,6 @@
 ### MAVEN ###
 target/
 *.xml.versionsBackup
+
+### DEBUGGER ###
+.attach*
