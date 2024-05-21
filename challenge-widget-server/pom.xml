@@ -13,12 +13,23 @@
     <artifactId>challenge-widget-server</artifactId>
 
     <dependencies>
+        <!-- INTERNAL -->
         <dependency>
             <groupId>me.ap.challenge</groupId>
             <artifactId>challenge-widget-core</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+        <dependency>
+            <groupId>me.ap.tools</groupId>
+            <artifactId>tools-lang</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>me.ap.tools</groupId>
+            <artifactId>tools-jackson</artifactId>
+        </dependency>
+
+        <!-- SPRING -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
@@ -29,26 +40,24 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <!-- MISC -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
-        <!-- TEST Dependencies -->
+        <!-- TEST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

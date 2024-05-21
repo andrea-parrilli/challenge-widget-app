@@ -2,20 +2,21 @@ package ma.ap.challenge.widgetapp.server.api.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import me.ap.challenge.widgetapp.core.deserialize.Buildable;
-import me.ap.challenge.widgetapp.core.deserialize.ToBuilderable;
+import me.ap.challenge.widgetapp.core.model.Widget;
+import me.ap.tools.lang.builder.Buildable;
+import me.ap.tools.lang.builder.ToBuilderable;
 
 
 /**
- * Models a Widget and acts as a DTO.
+ * DTO for {@link Widget}.
  */
 @Builder(toBuilder = true)
-public record Widget(
+public record WidgetDto(
         Long id,
         @NotNull Integer width,
         @NotNull Integer height,
         Integer z
-) implements ToBuilderable<Widget.WidgetBuilder> {
-    public static class WidgetBuilder implements Buildable<Widget> {
+) implements ToBuilderable<WidgetDto.WidgetDtoBuilder> {
+    public static class WidgetDtoBuilder implements Buildable<WidgetDto> {
     }
 }

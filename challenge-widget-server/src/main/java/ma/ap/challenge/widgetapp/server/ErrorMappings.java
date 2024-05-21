@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,7 +25,12 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-
+/**
+ * Declarative Exception to HTTP error response mapper.
+ * <p>
+ * Creates a uniform and informative payload to use as an HTTP response for error states.
+ * Hides details that, for security reasons, should not be part of an error response.
+ */
 @RestControllerAdvice
 public class ErrorMappings {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorMappings.class);
@@ -65,9 +72,11 @@ public class ErrorMappings {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handle(MethodArgumentNotValidException e) throws MethodArgumentNotValidException {
-        // Spring default error block for this exception is good enough
-        throw e;
+    public ResponseEntity<ErrorResponse> handle(MethodArgumentNotValidException e, HttpServletRequest request) {
+        String message = e.getAllErrors().stream()
+                .map(this::formatMessage)
+                .collect(Collectors.joining(","));
+        return error(message, BAD_REQUEST, request);
     }
 
     @ExceptionHandler
@@ -145,6 +154,15 @@ public class ErrorMappings {
     public ResponseEntity<ErrorResponse> handle(Exception e,
                                                 HttpServletRequest request) {
         return obfuscate(e, request);
+    }
+
+    private String formatMessage(ObjectError objectError) {
+        if(objectError instanceof FieldError fieldError) {
+            return String.format("field '%s' is invalid: %s", fieldError.getField(), fieldError.getRejectedValue());
+        } else {
+            return objectError.getDefaultMessage();
+        }
+
     }
 
     public record ErrorResponse(ZonedDateTime timestamp, Integer status, String error, String message, String path) {
