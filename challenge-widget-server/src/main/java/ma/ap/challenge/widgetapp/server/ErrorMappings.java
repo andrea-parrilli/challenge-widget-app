@@ -38,7 +38,7 @@ public class ErrorMappings {
     private ResponseEntity<ErrorResponse> obfuscate(Exception e,
                                                     HttpServletRequest request) {
         LOGGER.warn("Exception during request", e);
-        return error("An internal server error occurred. Please contact support if this issue persists.",
+        return error("An internal server error occurred. Please miao at support if this issue persists.",
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 request);
     }
