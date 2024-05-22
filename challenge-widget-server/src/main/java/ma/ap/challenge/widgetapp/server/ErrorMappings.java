@@ -54,6 +54,7 @@ public class ErrorMappings {
     private ResponseEntity<ErrorResponse> error(String message,
                                                 HttpStatus status,
                                                 HttpServletRequest request) {
+        LOGGER.info("Exception during request: " + message);
         return ResponseEntity.status(status)
                 .body(new ErrorResponse(ZonedDateTime.now(),
                         status.value(),
