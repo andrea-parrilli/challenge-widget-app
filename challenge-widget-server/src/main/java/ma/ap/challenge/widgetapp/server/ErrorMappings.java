@@ -21,6 +21,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import java.time.ZonedDateTime;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -65,7 +66,12 @@ public class ErrorMappings {
     public ResponseEntity<ErrorResponse> handle(MethodArgumentTypeMismatchException e,
                                                 HttpServletRequest request) {
         if (e.getCause() instanceof IllegalArgumentException) {
-            return error((IllegalArgumentException) e.getCause(), BAD_REQUEST, request);
+            return error(String.format("Parameter '%s' has the invalid value '%s'. Should be of type '%s'",
+                            e.getPropertyName(),
+                            e.getValue(),
+                            Optional.ofNullable(e.getRequiredType()).map(type -> type.getName()).orElse("unspecified")),
+                    BAD_REQUEST,
+                    request);
         }
 
         return obfuscate(e, request);
