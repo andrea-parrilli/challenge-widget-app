@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import ma.ap.challenge.widgetapp.server.api.ApiModelAdapter;
 import ma.ap.challenge.widgetapp.server.api.dto.WidgetDto;
-import me.ap.challenge.widgetapp.core.service.WidgetService;
 import me.ap.tools.jackson.deserialize.DeserializerForUpdating;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,16 +18,16 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 
 import static ma.ap.challenge.widgetapp.server.ApiPaths.PATH_WIDGET;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(PATH_WIDGET)
 @AllArgsConstructor
 public class WidgetController {
     private final ApiModelAdapter model;
-    private final WidgetService widgetService;
     private final DeserializerForUpdating updater;
 
-    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "{id}", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Get a Widget by id")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Widget found"),
@@ -40,13 +39,13 @@ public class WidgetController {
     }
 
     @ApiResponse(responseCode = "200", description = "All Widgets are listed")
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "List all Widgets")
     public Collection<WidgetDto> getAll() {
         return model.getAll();
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a Widget")
     @ApiResponses({
@@ -72,7 +71,7 @@ public class WidgetController {
         model.delete(id);
     }
 
-    @PutMapping("{id}")
+    @PutMapping(path = "{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Replace a Widget")
     @ApiResponses({
@@ -80,13 +79,14 @@ public class WidgetController {
             @ApiResponse(responseCode = "400", description = "The id or the Widget are not valid"),
             @ApiResponse(responseCode = "404", description = "The Widget does not exist")
     })
-    public WidgetDto update(@PathVariable Long id, @Valid @RequestBody WidgetDto updatedWidget) {
+    public WidgetDto replace(@PathVariable Long id, @Valid @RequestBody WidgetDto updatedWidget) {
         WidgetDto original = model.getById(id);
 
-        return model.update(original, updatedWidget);
+         var ret = model.update(original, updatedWidget);
+         return ret;
     }
 
-    @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update a Widget")
     @ApiResponses({
@@ -94,7 +94,7 @@ public class WidgetController {
             @ApiResponse(responseCode = "400", description = "The id or the Widget are not valid"),
             @ApiResponse(responseCode = "404", description = "The Widget does not exist")
     })
-    public WidgetDto patch(@PathVariable Long id, HttpServletRequest request) throws IOException {
+    public WidgetDto update(@PathVariable Long id, HttpServletRequest request) throws IOException {
         WidgetDto original = model.getById(id);
         WidgetDto updated = updater.updateFromJson(original, request.getInputStream());
 
