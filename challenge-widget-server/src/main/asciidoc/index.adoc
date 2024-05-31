@@ -1,0 +1,146 @@
+= Widget Server
+
+_A mock project_
+
+== Introduction
+
+This a REST service providing a basic API for CRUD operations on Widgets.
+
+The aim of the service is fool around with technology and showcase a fairly simple but complete Java project based on Spring and other modern technologies.
+It does not do anything really, and it shouldn't, since the business logic is merely a pretext.
+
+== Rest API
+
+This service publishes a rest API, documented hereby.
+
+=== Resources
+
+==== Widget
+
+A widget is a mysterious device, but it can be imagined as a flat, extended object, lying horizontally in a 3-dimensional space.
+Widgets will be fully described by their `height` and `width`, describing its extension on the cartesian plane, and `z`
+to represent the widget position in space on the vertical axis.
+
+Widgets can be operated on by using the resource endpoint `.../api/widget` to target all widgets, or `.../api/widget/<id>`
+to target a specific widget identified by its `id`.
+
+=== Get all Widgets
+
+To get all Widgets in the repository, issue the following request:
+
+.request
+include::{snippets}/widget_getAll/http-request.adoc[]
+
+This will produce a response akin to:
+
+.response
+include::{snippets}/widget_getAll/http-response.adoc[]
+
+And the response body contains:
+
+.response fields
+include::{snippets}/widget_getAll/response-fields.adoc[]
+
+=== Get a specific Widget
+
+To get a specific Widget by it id, issue the following request:
+
+.request
+include::{snippets}/widget_get/http-request.adoc[]
+
+With path parameters as follows:
+
+include::{snippets}/widget_get/path-parameters.adoc[]
+
+=== Create a new Widget
+
+To create a new Widget, issue the following request:
+
+.request
+include::{snippets}/widget_post/http-request.adoc[]
+
+The request payload is validated before further processing that might modify some of the fields.
+
+CAUTION: Never include the `id` field with a `POST` request: setting the `id` is not allowed and will cause a request to fail.
+
+.request fields
+include::{snippets}/widget_post/request-fields.adoc[]
+
+This will return the Widget that has been created with its effective properties.
+In facts, the backend might modify some of the submitted properties in order to maintain internal constraints for the whole set of Widgets.
+
+.response body
+include::{snippets}/widget_post/response-body.adoc[]
+
+The response body contains the following:
+
+.response fields
+include::{snippets}/widget_post/response-fields.adoc[]
+
+=== Delete a Widget
+
+To delete a Widget, its `id` must be known.
+
+NOTE: If no Widget with the given `id` exists, the request succeeds anyway, since the expected result, i.e. the absence of a Widget with the given `id`, has been achieved.
+
+.request
+include::{snippets}/widget_delete/http-request.adoc[]
+
+With path parameters as follows:
+
+include::{snippets}/widget_delete/path-parameters.adoc[]
+
+The response has no body:
+
+.response
+include::{snippets}/widget_delete/http-response.adoc[]
+
+=== Replace a Widget
+
+To completely replace a Widget, a new valid Widget has to be submitted as follows:
+
+.request
+include::{snippets}/widget_put/http-request.adoc[]
+
+WARNING: Including the `id` in a `PUT` request payload will cause the request to fail.
+The `id` is assigned by the system and cannot be modified.
+
+With path parameters:
+
+include::{snippets}/widget_put/path-parameters.adoc[]
+
+Success will produce the resulting newly replaced Widget.
+The Widget service might modify some of the Widget properties to preserve internal constraints on the complete set of Widgets.
+
+.response
+include::{snippets}/widget_put/http-response.adoc[]
+
+With fields:
+
+.response fields
+include::{snippets}/widget_put/response-fields.adoc[]
+
+=== Modify Widget's fields
+
+To modify selected fields of an existing Widget, the following request can be used:
+
+.request
+include::{snippets}/widget_patch/http-request.adoc[]
+
+Only include the fields to be modified in the payload.
+
+WARNING: Including the `id` in a `PATCH` request payload will cause the request to fail.
+The `id` is assigned by the system and cannot be modified.
+
+The path parameters are as follows:
+
+include::{snippets}/widget_patch/path-parameters.adoc[]
+
+The response will contain the new Widget state as stored in the Widget service.
+The Widget service might modify some of the Widget properties to preserve internal constraints on the complete set of Widgets.
+
+include::{snippets}/widget_patch/http-response.adoc[]
+
+With fields:
+
+include::{snippets}/widget_patch/response-fields.adoc[]

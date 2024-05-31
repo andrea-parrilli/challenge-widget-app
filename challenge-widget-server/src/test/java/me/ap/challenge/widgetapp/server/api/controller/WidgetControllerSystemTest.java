@@ -1,8 +1,8 @@
-package ma.ap.challenge.widgetapp.server.api.controller;
+package me.ap.challenge.widgetapp.server.api.controller;
 
-import ma.ap.challenge.widgetapp.server.WidgetAppServer;
-import ma.ap.challenge.widgetapp.server.api.ApiModelAdapter;
-import ma.ap.challenge.widgetapp.server.api.dto.WidgetDto;
+import me.ap.challenge.widgetapp.server.WidgetAppServer;
+import me.ap.challenge.widgetapp.server.api.ApiModelAdapter;
+import me.ap.challenge.widgetapp.server.api.dto.WidgetDto;
 import me.ap.challenge.widgetapp.core.WidgetAppCoreConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static ma.ap.challenge.widgetapp.server.ApiPaths.PATH_WIDGET;
+import static me.ap.challenge.widgetapp.server.ApiPaths.PATH_WIDGET;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,8 +25,8 @@ import static org.junit.jupiter.api.Assertions.*;
         classes = {WidgetAppServer.class, WidgetAppCoreConfiguration.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@AutoConfigureWebTestClient(timeout = "30000000")
-class WidgetControllerTest {
+@AutoConfigureWebTestClient(timeout = "30000000") //avoid timeouts when debugging
+class WidgetControllerSystemTest {
     private final WidgetDto widgetDto1 = WidgetDto.builder().width(1).height(2).z(3).build();
     @Autowired
     private WebTestClient api;
@@ -170,7 +170,7 @@ class WidgetControllerTest {
     }
 
     @Test
-    void patchUpdates() {
+    void updateUpdates() {
         var original = model.create(widgetDto1);
         // update just width
         var request = Map.of("width", 11);

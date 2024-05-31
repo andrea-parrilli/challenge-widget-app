@@ -1,7 +1,7 @@
-package ma.ap.challenge.widgetapp.server.api;
+package me.ap.challenge.widgetapp.server.api;
 
 import lombok.AllArgsConstructor;
-import ma.ap.challenge.widgetapp.server.api.dto.WidgetDto;
+import me.ap.challenge.widgetapp.server.api.dto.WidgetDto;
 import me.ap.challenge.widgetapp.core.model.Widget;
 import me.ap.challenge.widgetapp.core.service.WidgetService;
 import org.springframework.stereotype.Component;

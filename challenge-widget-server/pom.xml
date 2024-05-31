@@ -21,11 +21,6 @@
 
         <dependency>
             <groupId>me.ap.tools</groupId>
-            <artifactId>tools-lang</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>me.ap.tools</groupId>
             <artifactId>tools-jackson</artifactId>
         </dependency>
 
@@ -60,6 +55,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-mockmvc</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.11.0-M1</version>
@@ -74,9 +75,67 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <jvmArguments> -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 </jvmArguments>
+                    <!-- allow debug and JVM agents dynamic loading (Spring's proxies, AspectJ, ...) -->
+                    <jvmArguments> -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -XX:+EnableDynamicAgentLoading</jvmArguments>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-docs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html</backend>
+                            <doctype>book</doctype>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.springframework.restdocs</groupId>
+                        <artifactId>spring-restdocs-asciidoctor</artifactId>
+                        <version>${spring-restdocs.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <sourceDirectory>src/main/asciidoc</sourceDirectory>
+                    <attributes>
+                        <snippets>${project.basedir}/target/snippets</snippets>
+                    </attributes>
+                </configuration>
+            </plugin>
+
+            <!-- Copy generated documentation to static folder -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>src/main/resources/static/docs</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>target/generated-docs</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 

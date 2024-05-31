@@ -1,4 +1,4 @@
-package ma.ap.challenge.widgetapp.server;
+package me.ap.challenge.widgetapp.server;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;

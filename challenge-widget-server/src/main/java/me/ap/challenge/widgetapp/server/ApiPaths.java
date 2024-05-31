@@ -1,4 +1,4 @@
-package ma.ap.challenge.widgetapp.server;
+package me.ap.challenge.widgetapp.server;
 
 /**
  * The URL paths of the web API.
