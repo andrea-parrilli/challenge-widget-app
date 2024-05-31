@@ -11,6 +11,9 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
+import org.springframework.restdocs.operation.preprocess.OperationResponsePreprocessor;
+import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,12 +23,14 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
+import static com.jayway.jsonpath.internal.JsonFormatter.prettyPrint;
 import static ma.ap.challenge.widgetapp.server.ApiPaths.PATH_WIDGET;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -49,6 +54,8 @@ public class WidgetControllerDocumentationTest {
             fieldWithPath("height").description("The Height of the widget."),
             fieldWithPath("width").description("The width of the Widget."),
             fieldWithPath("z").description("The vertical coordinate of the Widget. Unique among all widgets, changes when another widget is assigned the same 'z'."));
+    private final OperationRequestPreprocessor requestPrettyPrint = Preprocessors.preprocessRequest(Preprocessors.prettyPrint());
+    private final OperationResponsePreprocessor responsePrettyPrint = Preprocessors.preprocessResponse(Preprocessors.prettyPrint());
     @Autowired
     private MockMvc mockMvc;
     @MockBean
@@ -71,6 +78,7 @@ public class WidgetControllerDocumentationTest {
                             "z": 3
                         }"""))
                 .andDo(document("widget_get",
+                        responsePrettyPrint,
                         responseFields(widgetFieldsAll),
                         pathParameters(parameterWithName("id").description("The id of the desired Widget"))));
 
@@ -98,9 +106,11 @@ public class WidgetControllerDocumentationTest {
                             "height":11,
                             "z":33}]
                         """))
-                .andDo(document("widget_getAll", responseFields(
-                        fieldWithPath("[]").description("The list of all widget known to the system"),
-                        fieldWithPath("[].*").description("Widget's fields. See the GET reference for more details."))));
+                .andDo(document("widget_getAll",
+                        responsePrettyPrint,
+                        responseFields(
+                                fieldWithPath("[]").description("The list of all widget known to the system"),
+                                fieldWithPath("[].*").description("Widget's fields. See the GET reference for more details."))));
         verify(model).getAll();
         verifyNoMoreInteractions(model);
     }
@@ -117,11 +127,13 @@ public class WidgetControllerDocumentationTest {
                                     "width": 2,
                                     "z": 3
                                 }"""))
-                .andDo(document("widget_post", requestFields(
-                        fieldWithPath("height").description("The desired height of the Widget, must be a positive integer."),
-                        fieldWithPath("width").description("The desired width of the Widget. Must be a positive integer. "),
-                        fieldWithPath("z").description("The desired vertical coordinate of the Widget. Unique among all widgets, changes when another widget is assigned the same 'z'")
-                )))
+                .andDo(document("widget_post",
+                        requestPrettyPrint,
+                        requestFields(
+                                fieldWithPath("height").description("The desired height of the Widget, must be a positive integer."),
+                                fieldWithPath("width").description("The desired width of the Widget. Must be a positive integer. "),
+                                fieldWithPath("z").description("The desired vertical coordinate of the Widget. Unique among all widgets, changes when another widget is assigned the same 'z'")
+                        )))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("""
@@ -131,7 +143,7 @@ public class WidgetControllerDocumentationTest {
                             "width": 2,
                             "z": 3
                         }"""))
-                .andDo(document("widget_post", responseFields(widgetFieldsAll)));
+                .andDo(document("widget_post", responsePrettyPrint, responseFields(widgetFieldsAll)));
 
         verify(model).create(exampleWidget.toBuilder().id(null).build());
         verifyNoMoreInteractions(model);
