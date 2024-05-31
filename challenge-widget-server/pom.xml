@@ -83,7 +83,7 @@
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>1.5.8</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>generate-docs</id>
@@ -104,6 +104,12 @@
                         <version>${spring-restdocs.version}</version>
                     </dependency>
                 </dependencies>
+                <configuration>
+                    <sourceDirectory>src/main/asciidoc</sourceDirectory>
+                    <attributes>
+                        <snippets>${project.basedir}/target/snippets</snippets>
+                    </attributes>
+                </configuration>
             </plugin>
 
         </plugins>
