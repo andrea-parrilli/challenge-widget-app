@@ -1,9 +1,8 @@
-package ma.ap.challenge.widgetapp.server.api.controller;
+package me.ap.challenge.widgetapp.server.api.controller;
 
-import ma.ap.challenge.widgetapp.server.WidgetAppServer;
-import ma.ap.challenge.widgetapp.server.WidgetAppServerWebConfiguration;
-import ma.ap.challenge.widgetapp.server.api.ApiModelAdapter;
-import ma.ap.challenge.widgetapp.server.api.dto.WidgetDto;
+import me.ap.challenge.widgetapp.server.WidgetAppServer;
+import me.ap.challenge.widgetapp.server.api.ApiModelAdapter;
+import me.ap.challenge.widgetapp.server.api.dto.WidgetDto;
 import me.ap.challenge.widgetapp.core.WidgetAppCoreConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static ma.ap.challenge.widgetapp.server.ApiPaths.PATH_WIDGET;
+import static me.ap.challenge.widgetapp.server.ApiPaths.PATH_WIDGET;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 

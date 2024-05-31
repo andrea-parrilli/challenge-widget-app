@@ -1,4 +1,4 @@
-package ma.ap.challenge.widgetapp.server;
+package me.ap.challenge.widgetapp.server;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;

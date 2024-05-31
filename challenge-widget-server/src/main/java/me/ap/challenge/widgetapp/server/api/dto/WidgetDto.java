@@ -1,4 +1,4 @@
-package ma.ap.challenge.widgetapp.server.api.dto;
+package me.ap.challenge.widgetapp.server.api.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;

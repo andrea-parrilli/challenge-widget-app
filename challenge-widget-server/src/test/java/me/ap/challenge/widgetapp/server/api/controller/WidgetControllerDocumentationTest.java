@@ -1,9 +1,9 @@
-package ma.ap.challenge.widgetapp.server.api.controller;
+package me.ap.challenge.widgetapp.server.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ma.ap.challenge.widgetapp.server.WidgetAppServerWebConfiguration;
-import ma.ap.challenge.widgetapp.server.api.ApiModelAdapter;
-import ma.ap.challenge.widgetapp.server.api.dto.WidgetDto;
+import me.ap.challenge.widgetapp.server.WidgetAppServerWebConfiguration;
+import me.ap.challenge.widgetapp.server.api.ApiModelAdapter;
+import me.ap.challenge.widgetapp.server.api.dto.WidgetDto;
 import me.ap.tools.jackson.deserialize.DeserializerForUpdating;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +18,16 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
-import static com.jayway.jsonpath.internal.JsonFormatter.prettyPrint;
-import static ma.ap.challenge.widgetapp.server.ApiPaths.PATH_WIDGET;
+import static me.ap.challenge.widgetapp.server.ApiPaths.PATH_WIDGET;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;

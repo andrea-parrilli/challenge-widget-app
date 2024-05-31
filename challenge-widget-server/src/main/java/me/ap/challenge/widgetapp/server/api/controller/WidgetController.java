@@ -1,4 +1,4 @@
-package ma.ap.challenge.widgetapp.server.api.controller;
+package me.ap.challenge.widgetapp.server.api.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -6,22 +6,21 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import ma.ap.challenge.widgetapp.server.api.ApiModelAdapter;
-import ma.ap.challenge.widgetapp.server.api.dto.WidgetDto;
+import me.ap.challenge.widgetapp.server.api.ApiModelAdapter;
+import me.ap.challenge.widgetapp.server.api.dto.WidgetDto;
+import me.ap.challenge.widgetapp.server.ApiPaths;
 import me.ap.tools.jackson.deserialize.DeserializerForUpdating;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
-import static ma.ap.challenge.widgetapp.server.ApiPaths.PATH_WIDGET;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(PATH_WIDGET)
+@RequestMapping(ApiPaths.PATH_WIDGET)
 @AllArgsConstructor
 public class WidgetController {
     private final ApiModelAdapter model;

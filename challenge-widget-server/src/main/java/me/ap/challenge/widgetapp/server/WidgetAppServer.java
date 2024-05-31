@@ -1,4 +1,4 @@
-package ma.ap.challenge.widgetapp.server;
+package me.ap.challenge.widgetapp.server;
 
 import me.ap.challenge.widgetapp.core.WidgetAppCoreConfiguration;
 import me.ap.tools.jackson.deserialize.DeserializerForUpdating;
