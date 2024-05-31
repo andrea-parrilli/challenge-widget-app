@@ -1,5 +1,6 @@
 package ma.ap.challenge.widgetapp.server.api.controller;
 
+import ma.ap.challenge.widgetapp.server.WidgetAppServer;
 import ma.ap.challenge.widgetapp.server.WidgetAppServerWebConfiguration;
 import ma.ap.challenge.widgetapp.server.api.ApiModelAdapter;
 import ma.ap.challenge.widgetapp.server.api.dto.WidgetDto;
@@ -22,10 +23,10 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
-        classes = {WidgetAppServerWebConfiguration.class, WidgetAppCoreConfiguration.class},
+        classes = {WidgetAppServer.class, WidgetAppCoreConfiguration.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@AutoConfigureWebTestClient(timeout = "30000000")
+@AutoConfigureWebTestClient(timeout = "30000000") //avoid timeouts when debugging
 class WidgetControllerSystemTest {
     private final WidgetDto widgetDto1 = WidgetDto.builder().width(1).height(2).z(3).build();
     @Autowired

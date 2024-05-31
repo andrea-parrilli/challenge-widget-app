@@ -11,7 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Does not include actual configuration, which is delegated to {@code <...>Configuration} classes, to allow for
  * targeted integration tests, only booting the relevant parts of the context.
  */
-@SpringBootApplication(scanBasePackageClasses = {WidgetAppServerWebConfiguration.class,
+@SpringBootApplication(scanBasePackageClasses = {
+        WidgetAppServerWebConfiguration.class,
         WidgetAppCoreConfiguration.class,
         DeserializerForUpdating.class})
 public class WidgetAppServer {
