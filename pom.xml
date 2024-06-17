@@ -40,11 +40,13 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     </properties>
 
     <modules>
         <module>challenge-widget-core</module>
         <module>challenge-widget-server</module>
+        <module>coverage-reports</module>
     </modules>
 
     <dependencies>
@@ -79,6 +81,12 @@
             <dependency>
                 <groupId>me.ap.challenge</groupId>
                 <artifactId>challenge-widget-core</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>me.ap.challenge</groupId>
+                <artifactId>challenge-widget-server</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
@@ -123,4 +131,21 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
