@@ -5,6 +5,10 @@ Or at least it was.
 Now it is a playground to experiment with, and showcase the use of, current web app technology and the latest Java
 features.
 
+# Build
+
+To build the project, first build and install [tools-all](https://github.com/andrea-parrilli/tools-all), which is a dependency that is not published yet, by issuing, at the root of `tools/all` the maven command `mvn install`.
+
 # OpenAPI and Swagger
 
 API documentation is available as an open API spec at:
